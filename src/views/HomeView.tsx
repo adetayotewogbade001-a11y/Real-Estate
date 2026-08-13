@@ -16,9 +16,13 @@ import {
   Key,
   Briefcase,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  BarChart3,
+  Compass,
+  Crown,
+  Sparkles
 } from 'lucide-react';
-import { Property, PropertyFilter } from '../types';
+import { Property, PropertyFilter, CurrencyOption, UnitOption } from '../types';
 import { PropertySearchBar } from '../components/PropertySearchBar';
 import { PropertyCard } from '../components/PropertyCard';
 
@@ -32,6 +36,14 @@ interface HomeViewProps {
   onSearchProperties: () => void;
   onOpenValuation: () => void;
   onNavigate: (view: string) => void;
+  currency: CurrencyOption;
+  unit: UnitOption;
+  onOpenMarketAnalytics: () => void;
+  onOpenNeighborhoods: () => void;
+  onOpenOffPlan: () => void;
+  onOpenRoiCalculator: () => void;
+  onOpenVipClub: () => void;
+  onOpenInstantValuation: () => void;
 }
 
 const HERO_SLIDES = [
@@ -62,7 +74,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
   setFilter,
   onSearchProperties,
   onOpenValuation,
-  onNavigate
+  onNavigate,
+  currency,
+  unit,
+  onOpenMarketAnalytics,
+  onOpenNeighborhoods,
+  onOpenOffPlan,
+  onOpenRoiCalculator,
+  onOpenVipClub,
+  onOpenInstantValuation
 }) => {
   const featuredProperties = properties.filter(p => p.featured).slice(0, 4);
 
@@ -79,7 +99,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   return (
     <div className="space-y-16 pb-12">
       <Helmet>
-        <title>Morgan Property Services | Leading Estate & Letting Agents in Newry</title>
+        <title>Morgan Property Services | Estate & Letting Agents in Newry</title>
         <meta 
           name="description" 
           content="Morgan Property Services is a long-established Licensed NAEA estate agency in Newry providing residential sales, lettings, valuations, and commercial property across Newry & Mourne." 
@@ -136,21 +156,21 @@ export const HomeView: React.FC<HomeViewProps> = ({
             </p>
 
             {/* Hero CTAs */}
-            <div className="flex flex-wrap items-center justify-start gap-4 pt-2">
+            <div className="flex flex-wrap items-center justify-start gap-3 pt-2">
               <button
-                onClick={onOpenValuation}
+                onClick={onOpenInstantValuation}
                 className="bg-[#B48C4E] hover:bg-[#967540] text-white font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-sm shadow-md transition-all flex items-center gap-2 cursor-pointer"
               >
-                <Calculator className="w-4 h-4" />
-                <span>Book a Free Valuation</span>
+                <Sparkles className="w-4 h-4" />
+                <span>Instant AI Valuation</span>
               </button>
 
               <button
-                onClick={() => onNavigate('properties')}
+                onClick={onOpenOffPlan}
                 className="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-sm backdrop-blur-md transition-all flex items-center gap-2 cursor-pointer"
               >
-                <Search className="w-4 h-4 text-[#B48C4E]" />
-                <span>View Properties</span>
+                <Building2 className="w-4 h-4 text-[#B48C4E]" />
+                <span>Off-Plan Developments</span>
               </button>
             </div>
 
@@ -200,6 +220,68 @@ export const HomeView: React.FC<HomeViewProps> = ({
         />
       </section>
 
+      {/* PORTAL FEATURE HIGHLIGHT GRID (D&B, fäm, Oasis, Caul, Patricia Grieco) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+          
+          <button
+            onClick={onOpenMarketAnalytics}
+            className="p-4 bg-slate-900 text-white rounded-sm border border-slate-800 hover:border-[#B48C4E] text-left space-y-2 transition-all cursor-pointer group shadow-sm"
+          >
+            <BarChart3 className="w-6 h-6 text-[#B48C4E] group-hover:scale-110 transition-transform" />
+            <div>
+              <h4 className="font-serif font-bold text-xs text-white">Market Index</h4>
+              <p className="text-[10px] text-slate-400 mt-0.5">Average £/sq ft & YoY growth</p>
+            </div>
+          </button>
+
+          <button
+            onClick={onOpenOffPlan}
+            className="p-4 bg-slate-900 text-white rounded-sm border border-slate-800 hover:border-[#B48C4E] text-left space-y-2 transition-all cursor-pointer group shadow-sm"
+          >
+            <Building2 className="w-6 h-6 text-[#B48C4E] group-hover:scale-110 transition-transform" />
+            <div>
+              <h4 className="font-serif font-bold text-xs text-white">Off-Plan Projects</h4>
+              <p className="text-[10px] text-slate-400 mt-0.5">Pre-launch developments</p>
+            </div>
+          </button>
+
+          <button
+            onClick={onOpenNeighborhoods}
+            className="p-4 bg-slate-900 text-white rounded-sm border border-slate-800 hover:border-[#B48C4E] text-left space-y-2 transition-all cursor-pointer group shadow-sm"
+          >
+            <Compass className="w-6 h-6 text-[#B48C4E] group-hover:scale-110 transition-transform" />
+            <div>
+              <h4 className="font-serif font-bold text-xs text-white">Area Guides</h4>
+              <p className="text-[10px] text-slate-400 mt-0.5">Schools, commutes & yields</p>
+            </div>
+          </button>
+
+          <button
+            onClick={onOpenRoiCalculator}
+            className="p-4 bg-slate-900 text-white rounded-sm border border-slate-800 hover:border-[#B48C4E] text-left space-y-2 transition-all cursor-pointer group shadow-sm"
+          >
+            <TrendingUp className="w-6 h-6 text-[#B48C4E] group-hover:scale-110 transition-transform" />
+            <div>
+              <h4 className="font-serif font-bold text-xs text-white">ROI Yield Calculator</h4>
+              <p className="text-[10px] text-slate-400 mt-0.5">Gross/Net rental projections</p>
+            </div>
+          </button>
+
+          <button
+            onClick={onOpenVipClub}
+            className="p-4 bg-[#0F172A] text-white rounded-sm border border-amber-500/40 hover:border-amber-400 text-left space-y-2 transition-all cursor-pointer group shadow-sm col-span-2 md:col-span-1"
+          >
+            <Crown className="w-6 h-6 text-amber-400 group-hover:scale-110 transition-transform" />
+            <div>
+              <h4 className="font-serif font-bold text-xs text-amber-300">VIP Off-Market Club</h4>
+              <p className="text-[10px] text-slate-300 mt-0.5">Unlisted pre-market alerts</p>
+            </div>
+          </button>
+
+        </div>
+      </section>
+
       {/* FEATURED PROPERTIES SECTION */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
@@ -233,6 +315,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
               onSelect={onSelectProperty}
               isSaved={savedPropertyIds.includes(property.id)}
               onToggleSave={onToggleSaveProperty}
+              currency={currency}
+              unit={unit}
             />
           ))}
         </div>
@@ -325,11 +409,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
             </p>
             <div className="pt-2 flex flex-wrap items-center gap-4">
               <button
-                onClick={onOpenValuation}
+                onClick={onOpenInstantValuation}
                 className="bg-[#B48C4E] hover:bg-[#967540] text-white font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-sm shadow-md transition-all flex items-center gap-2 cursor-pointer"
               >
-                <Calculator className="w-4 h-4" />
-                <span>Book a Free Pre-Sale Valuation</span>
+                <Sparkles className="w-4 h-4" />
+                <span>Get Instant Value Range</span>
               </button>
               <button
                 onClick={() => onNavigate('sales')}

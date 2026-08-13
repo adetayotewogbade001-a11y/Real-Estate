@@ -18,7 +18,7 @@ import {
   Map as MapIcon,
   Columns
 } from 'lucide-react';
-import { Property, PropertyFilter } from '../types';
+import { Property, PropertyFilter, CurrencyOption, UnitOption } from '../types';
 import { PropertyCard } from '../components/PropertyCard';
 import { HouzezPropertyMap } from '../components/HouzezPropertyMap';
 
@@ -34,6 +34,8 @@ interface PropertiesViewProps {
   compareIds?: string[];
   onToggleCompare?: (property: Property) => void;
   onScheduleViewing?: (property: Property) => void;
+  currency?: CurrencyOption;
+  unit?: UnitOption;
 }
 
 export const PropertiesView: React.FC<PropertiesViewProps> = ({
@@ -47,7 +49,9 @@ export const PropertiesView: React.FC<PropertiesViewProps> = ({
   onOpenValuation,
   compareIds = [],
   onToggleCompare,
-  onScheduleViewing
+  onScheduleViewing,
+  currency,
+  unit
 }) => {
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'map' | 'split'>('grid');
   const [showSavedOnly, setShowSavedOnly] = useState<boolean>(false);
@@ -301,6 +305,8 @@ export const PropertiesView: React.FC<PropertiesViewProps> = ({
                     onToggleCompare={onToggleCompare}
                     viewMode="list"
                     onScheduleViewing={onScheduleViewing}
+                    currency={currency}
+                    unit={unit}
                   />
                 </div>
               ))}
@@ -443,6 +449,8 @@ export const PropertiesView: React.FC<PropertiesViewProps> = ({
                       onToggleCompare={onToggleCompare}
                       viewMode={viewMode}
                       onScheduleViewing={onScheduleViewing}
+                      currency={currency}
+                      unit={unit}
                     />
                   ))}
                 </div>

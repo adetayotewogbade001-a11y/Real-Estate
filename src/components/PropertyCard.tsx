@@ -11,7 +11,8 @@ import {
   Layers,
   ArrowRight
 } from 'lucide-react';
-import { Property } from '../types';
+import { Property, CurrencyOption, UnitOption } from '../types';
+import { formatPrice, formatArea } from '../utils/formatters';
 
 interface PropertyCardProps {
   property: Property;
@@ -22,6 +23,8 @@ interface PropertyCardProps {
   onToggleCompare?: (property: Property) => void;
   viewMode?: 'grid' | 'list';
   onScheduleViewing?: (property: Property) => void;
+  currency?: CurrencyOption;
+  unit?: UnitOption;
 }
 
 export const PropertyCard: React.FC<PropertyCardProps> = ({
@@ -32,8 +35,13 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
   isCompared = false,
   onToggleCompare,
   viewMode = 'grid',
-  onScheduleViewing
+  onScheduleViewing,
+  currency = { code: 'GBP', symbol: '£', rateToGBP: 1.0, label: 'GBP' } as CurrencyOption,
+  unit = 'sqft' as UnitOption
 }) => {
+  const displayPrice = currency ? formatPrice(property.price, currency) : property.priceText;
+  const displayArea = formatArea(property.sqft, unit);
+
   const getStatusBadgeStyle = (status: string) => {
     switch (status) {
       case 'For Sale':
@@ -103,7 +111,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
               </div>
 
               <p className="text-xl font-serif font-bold text-[#B48C4E] text-right flex-shrink-0">
-                {property.priceText}
+                {displayPrice}{property.category === 'Rent' ? '/mo' : ''}
               </p>
             </div>
 
@@ -132,7 +140,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
               {property.sqft && property.sqft > 0 && (
                 <span className="flex items-center gap-1" title="Area">
                   <Maximize2 className="w-3.5 h-3.5 text-[#B48C4E]" />
-                  <span>{property.sqft} sq ft</span>
+                  <span>{displayArea}</span>
                 </span>
               )}
 
@@ -283,7 +291,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
 
           {/* Price */}
           <p className="text-lg font-serif font-bold text-[#B48C4E] mt-1">
-            {property.priceText}
+            {displayPrice}{property.category === 'Rent' ? '/mo' : ''}
           </p>
         </div>
 
@@ -307,7 +315,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
             {property.sqft && property.sqft > 0 && (
               <span className="flex items-center gap-1 hidden sm:flex" title="Square Feet">
                 <Maximize2 className="w-3 h-3 text-slate-400" />
-                <span>{property.sqft} sq ft</span>
+                <span>{displayArea}</span>
               </span>
             )}
           </div>
@@ -324,3 +332,4 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
     </div>
   );
 };
+

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Property, PropertyFilter } from './types';
+import { Property, PropertyFilter, CurrencyOption, UnitOption } from './types';
+import { CURRENCY_OPTIONS } from './utils/formatters';
 import { INITIAL_PROPERTIES } from './data/mockProperties';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
@@ -11,6 +12,15 @@ import { PropertyCompareBar } from './components/PropertyCompareBar';
 import { PropertyCompareModal } from './components/PropertyCompareModal';
 import { SavedFavoritesDrawer } from './components/SavedFavoritesDrawer';
 import { ScheduleTourModal } from './components/ScheduleTourModal';
+
+// Portal Feature Modals & Components
+import { RoiYieldCalculatorModal } from './components/RoiYieldCalculatorModal';
+import { NeighborhoodGuidesModal } from './components/NeighborhoodGuidesModal';
+import { NewDevelopmentsModal } from './components/NewDevelopmentsModal';
+import { MarketAnalyticsModal } from './components/MarketAnalyticsModal';
+import { InstantHomeValuationModal } from './components/InstantHomeValuationModal';
+import { VipBuyerClubModal } from './components/VipBuyerClubModal';
+import { WhatsAppConcierge } from './components/WhatsAppConcierge';
 
 import { HomeView } from './views/HomeView';
 import { PropertiesView } from './views/PropertiesView';
@@ -47,7 +57,19 @@ export default function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // 2. Properties Persistent State
+  // 2. Currency & Area Unit State
+  const [currency, setCurrency] = useState<CurrencyOption>(CURRENCY_OPTIONS[0]); // GBP
+  const [unit, setUnit] = useState<UnitOption>('sqft');
+
+  // 3. Portal Feature Modals State
+  const [roiModalOpen, setRoiModalOpen] = useState(false);
+  const [neighborhoodsOpen, setNeighborhoodsOpen] = useState(false);
+  const [offPlanOpen, setOffPlanOpen] = useState(false);
+  const [marketAnalyticsOpen, setMarketAnalyticsOpen] = useState(false);
+  const [instantValuationOpen, setInstantValuationOpen] = useState(false);
+  const [vipClubOpen, setVipClubOpen] = useState(false);
+
+  // 4. Properties Persistent State
   const [properties, setProperties] = useState<Property[]>(() => {
     try {
       const stored = localStorage.getItem('mps_properties_v1');
@@ -69,7 +91,7 @@ export default function App() {
     }
   }, [properties]);
 
-  // 3. Saved Properties / Wishlist State
+  // 5. Saved Properties / Wishlist State
   const [savedPropertyIds, setSavedPropertyIds] = useState<string[]>(() => {
     try {
       const stored = localStorage.getItem('mps_saved_properties');
@@ -90,7 +112,7 @@ export default function App() {
     );
   };
 
-  // 4. Houzez Compare Properties State
+  // 6. Houzez Compare Properties State
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState<boolean>(false);
 
@@ -100,6 +122,7 @@ export default function App() {
         return prev.filter(id => id !== property.id);
       }
       if (prev.length >= 4) {
+        alert('You can compare up to 4 properties at once.');
         return prev;
       }
       return [...prev, property.id];
@@ -107,7 +130,7 @@ export default function App() {
   };
 
   const removeCompareProperty = (id: string) => {
-    setCompareIds(prev => prev.filter(pId => pId !== id));
+    setCompareIds(prev => prev.filter(item => item !== id));
   };
 
   const clearCompareProperties = () => {
@@ -115,27 +138,27 @@ export default function App() {
   };
 
   const compareProperties = properties.filter(p => compareIds.includes(p.id));
-
-  // 5. Saved Wishlist Drawer State
-  const [isSavedDrawerOpen, setIsSavedDrawerOpen] = useState<boolean>(false);
   const savedPropertiesList = properties.filter(p => savedPropertyIds.includes(p.id));
 
-  // 6. Schedule Tour Viewing State
-  const [scheduleTourProperty, setScheduleTourProperty] = useState<Property | null>(null);
+  // 7. Saved Favorites Drawer State
+  const [isSavedDrawerOpen, setIsSavedDrawerOpen] = useState<boolean>(false);
 
-  // 7. Property Detail Modal State
+  // 8. Selected Property for Detail Modal
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
-  // 8. Valuation Modal State
+  // 9. Schedule Tour Modal State
+  const [scheduleTourProperty, setScheduleTourProperty] = useState<Property | null>(null);
+
+  // 10. Valuation Modal State
   const [valuationModalOpen, setValuationModalOpen] = useState<boolean>(false);
 
-  // 9. CMS Manage Modal State
+  // 11. CMS Modal State
   const [cmsModalOpen, setCmsModalOpen] = useState<boolean>(false);
 
-  // 10. Legal Modals
+  // 12. Legal Modal State
   const [legalModalType, setLegalModalType] = useState<'privacy' | 'terms' | 'cookies' | null>(null);
 
-  // 11. Shared Filter State
+  // 13. Global Search Filter State
   const [filter, setFilter] = useState<PropertyFilter>({
     category: 'All',
     propertyType: '',
@@ -180,6 +203,16 @@ export default function App() {
         onOpenValuation={() => setValuationModalOpen(true)}
         onOpenCms={() => setCmsModalOpen(true)}
         onOpenSavedDrawer={() => setIsSavedDrawerOpen(true)}
+        currency={currency}
+        onCurrencyChange={setCurrency}
+        unit={unit}
+        onUnitChange={setUnit}
+        onOpenMarketAnalytics={() => setMarketAnalyticsOpen(true)}
+        onOpenNeighborhoods={() => setNeighborhoodsOpen(true)}
+        onOpenOffPlan={() => setOffPlanOpen(true)}
+        onOpenRoiCalculator={() => setRoiModalOpen(true)}
+        onOpenVipClub={() => setVipClubOpen(true)}
+        onOpenInstantValuation={() => setInstantValuationOpen(true)}
       />
 
       {/* Main View Router */}
@@ -195,6 +228,14 @@ export default function App() {
             onSearchProperties={handleSearchProperties}
             onOpenValuation={() => setValuationModalOpen(true)}
             onNavigate={setCurrentView}
+            currency={currency}
+            unit={unit}
+            onOpenMarketAnalytics={() => setMarketAnalyticsOpen(true)}
+            onOpenNeighborhoods={() => setNeighborhoodsOpen(true)}
+            onOpenOffPlan={() => setOffPlanOpen(true)}
+            onOpenRoiCalculator={() => setRoiModalOpen(true)}
+            onOpenVipClub={() => setVipClubOpen(true)}
+            onOpenInstantValuation={() => setInstantValuationOpen(true)}
           />
         )}
 
@@ -211,6 +252,8 @@ export default function App() {
             compareIds={compareIds}
             onToggleCompare={toggleCompareProperty}
             onScheduleViewing={setScheduleTourProperty}
+            currency={currency}
+            unit={unit}
           />
         )}
 
@@ -260,6 +303,9 @@ export default function App() {
         onOpenLegal={setLegalModalType}
       />
 
+      {/* Floating WhatsApp Concierge Widget */}
+      <WhatsAppConcierge />
+
       {/* Houzez Floating Compare Bar */}
       <PropertyCompareBar
         compareProperties={compareProperties}
@@ -297,7 +343,43 @@ export default function App() {
         onClose={() => setScheduleTourProperty(null)}
       />
 
-      {/* Modals */}
+      {/* Portal Feature Modals */}
+      <RoiYieldCalculatorModal
+        isOpen={roiModalOpen}
+        onClose={() => setRoiModalOpen(false)}
+        currency={currency}
+      />
+
+      <NeighborhoodGuidesModal
+        isOpen={neighborhoodsOpen}
+        onClose={() => setNeighborhoodsOpen(false)}
+        currency={currency}
+      />
+
+      <NewDevelopmentsModal
+        isOpen={offPlanOpen}
+        onClose={() => setOffPlanOpen(false)}
+        currency={currency}
+      />
+
+      <MarketAnalyticsModal
+        isOpen={marketAnalyticsOpen}
+        onClose={() => setMarketAnalyticsOpen(false)}
+        currency={currency}
+      />
+
+      <InstantHomeValuationModal
+        isOpen={instantValuationOpen}
+        onClose={() => setInstantValuationOpen(false)}
+        currency={currency}
+      />
+
+      <VipBuyerClubModal
+        isOpen={vipClubOpen}
+        onClose={() => setVipClubOpen(false)}
+      />
+
+      {/* Standard Modals */}
       <PropertyDetailModal
         property={selectedProperty}
         onClose={() => setSelectedProperty(null)}
@@ -307,6 +389,8 @@ export default function App() {
           setSelectedProperty(null);
           setValuationModalOpen(true);
         }}
+        currency={currency}
+        unit={unit}
       />
 
       <ValuationModal

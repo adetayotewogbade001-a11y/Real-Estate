@@ -8,8 +8,15 @@ import {
   Award, 
   ChevronRight,
   Calculator,
-  Search
+  Search,
+  BarChart3,
+  Compass,
+  Crown,
+  TrendingUp,
+  Sparkles
 } from 'lucide-react';
+import { CurrencyOption, UnitOption } from '../types';
+import { MultiCurrencyBar } from './MultiCurrencyBar';
 
 interface HeaderProps {
   currentView: string;
@@ -18,6 +25,16 @@ interface HeaderProps {
   onOpenValuation: () => void;
   onOpenCms: () => void;
   onOpenSavedDrawer?: () => void;
+  currency: CurrencyOption;
+  onCurrencyChange: (currency: CurrencyOption) => void;
+  unit: UnitOption;
+  onUnitChange: (unit: UnitOption) => void;
+  onOpenMarketAnalytics: () => void;
+  onOpenNeighborhoods: () => void;
+  onOpenOffPlan: () => void;
+  onOpenRoiCalculator: () => void;
+  onOpenVipClub: () => void;
+  onOpenInstantValuation: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -26,7 +43,17 @@ export const Header: React.FC<HeaderProps> = ({
   savedCount,
   onOpenValuation,
   onOpenCms,
-  onOpenSavedDrawer
+  onOpenSavedDrawer,
+  currency,
+  onCurrencyChange,
+  unit,
+  onUnitChange,
+  onOpenMarketAnalytics,
+  onOpenNeighborhoods,
+  onOpenOffPlan,
+  onOpenRoiCalculator,
+  onOpenVipClub,
+  onOpenInstantValuation
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -49,37 +76,84 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md text-slate-900 border-b border-slate-100 shadow-sm">
-      {/* Top Banner Bar */}
-      <div className="bg-[#0F172A] text-slate-300 text-xs py-2 px-4 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5 font-medium text-[#B48C4E]">
-              <Award className="w-3.5 h-3.5" />
-              <span className="text-[10px] font-bold uppercase tracking-wider">Licensed NAEA Agent</span>
-            </span>
-            <span className="hidden sm:inline text-slate-700">|</span>
-            <span className="hidden sm:inline text-slate-300 text-[11px]">
-              Serving Newry, Warrenpoint, Camlough & Mourne Area
-            </span>
-          </div>
+      
+      {/* 1. Multi-Currency & Unit Conversion Bar */}
+      <MultiCurrencyBar
+        selectedCurrency={currency}
+        onCurrencyChange={onCurrencyChange}
+        selectedUnit={unit}
+        onUnitChange={onUnitChange}
+      />
 
-          <div className="flex items-center gap-4 ml-auto text-[11px]">
-            <span className="text-slate-400 hidden md:inline">
-              Mon–Fri 09:00–17:30 | Sat 09:00–12:00
-            </span>
+      {/* 2. Top Banner Bar with Feature Quick Links */}
+      <div className="bg-[#0F172A] text-slate-300 text-xs py-2 px-4 border-b border-slate-800">
+        <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
+          
+          <div className="flex items-center gap-3 text-[11px] overflow-x-auto py-0.5">
             <button
-              onClick={onOpenCms}
-              className="text-xs text-[#B48C4E] hover:text-amber-300 font-medium underline underline-offset-2 transition-colors cursor-pointer"
-              title="Manage local property database"
+              onClick={onOpenMarketAnalytics}
+              className="flex items-center gap-1 text-slate-300 hover:text-[#B48C4E] font-medium transition-colors cursor-pointer whitespace-nowrap"
             >
-              Property Portal / CMS
+              <BarChart3 className="w-3.5 h-3.5 text-[#B48C4E]" />
+              <span>Market Index</span>
+            </button>
+            <span className="text-slate-700">|</span>
+            <button
+              onClick={onOpenOffPlan}
+              className="flex items-center gap-1 text-slate-300 hover:text-[#B48C4E] font-medium transition-colors cursor-pointer whitespace-nowrap"
+            >
+              <Building2 className="w-3.5 h-3.5 text-[#B48C4E]" />
+              <span>Off-Plan Projects</span>
+            </button>
+            <span className="text-slate-700">|</span>
+            <button
+              onClick={onOpenNeighborhoods}
+              className="flex items-center gap-1 text-slate-300 hover:text-[#B48C4E] font-medium transition-colors cursor-pointer whitespace-nowrap"
+            >
+              <Compass className="w-3.5 h-3.5 text-[#B48C4E]" />
+              <span>Area Guides</span>
+            </button>
+            <span className="text-slate-700">|</span>
+            <button
+              onClick={onOpenRoiCalculator}
+              className="flex items-center gap-1 text-slate-300 hover:text-[#B48C4E] font-medium transition-colors cursor-pointer whitespace-nowrap"
+            >
+              <TrendingUp className="w-3.5 h-3.5 text-[#B48C4E]" />
+              <span>ROI Calculator</span>
+            </button>
+            <span className="text-slate-700">|</span>
+            <button
+              onClick={onOpenVipClub}
+              className="flex items-center gap-1 text-amber-300 hover:text-white font-bold transition-colors cursor-pointer whitespace-nowrap"
+            >
+              <Crown className="w-3.5 h-3.5 text-amber-400" />
+              <span>VIP Off-Market Club</span>
             </button>
           </div>
+
+          <div className="flex items-center gap-3 ml-auto text-[11px]">
+            <button
+              onClick={onOpenInstantValuation}
+              className="text-[#B48C4E] hover:text-white font-bold flex items-center gap-1 cursor-pointer whitespace-nowrap"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Instant AI Valuation</span>
+            </button>
+            <span className="text-slate-700 hidden sm:inline">|</span>
+            <button
+              onClick={onOpenCms}
+              className="text-slate-400 hover:text-white transition-colors cursor-pointer whitespace-nowrap hidden sm:inline"
+              title="Manage local property database"
+            >
+              Portal CMS
+            </button>
+          </div>
+
         </div>
       </div>
 
       {/* Main Header Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
         {/* Brand Logo */}
         <button
           onClick={() => handleNavClick('home')}
@@ -123,7 +197,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Favorites shortcut */}
           <button
             onClick={() => onOpenSavedDrawer ? onOpenSavedDrawer() : handleNavClick('properties')}
-            className="p-2 rounded-sm bg-slate-50 text-slate-600 hover:text-[#0F172A] hover:bg-slate-100 border border-slate-200 transition-colors relative cursor-pointer"
+            className="p-2.5 rounded-sm bg-slate-50 text-slate-600 hover:text-[#0F172A] hover:bg-slate-100 border border-slate-200 transition-colors relative cursor-pointer"
             title="Saved Wishlist"
           >
             <Heart className="w-5 h-5" />
@@ -137,10 +211,10 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Book Valuation Primary CTA */}
           <button
             onClick={onOpenValuation}
-            className="px-5 py-2.5 bg-[#0F172A] text-white text-xs font-semibold rounded-sm hover:bg-slate-800 transition-all cursor-pointer uppercase tracking-wider flex items-center gap-2"
+            className="px-5 py-2.5 bg-[#0F172A] text-white text-xs font-semibold rounded-sm hover:bg-slate-800 transition-all cursor-pointer uppercase tracking-wider flex items-center gap-2 shadow-sm"
           >
             <Calculator className="w-4 h-4 text-[#B48C4E]" />
-            <span>Book a Valuation</span>
+            <span>Book Valuation</span>
           </button>
         </div>
 
@@ -164,23 +238,51 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-t border-slate-100 px-4 pt-3 pb-6 space-y-2 animate-in slide-in-from-top-2 duration-200 shadow-xl">
-          <div className="flex items-center justify-between pb-2 border-b border-slate-100 text-xs text-slate-500">
-            <span className="flex items-center gap-1 text-[#B48C4E] font-medium">
-              <Award className="w-3.5 h-3.5" /> Licensed NAEA Agent
-            </span>
+        <div className="lg:hidden bg-white border-t border-slate-100 px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2 duration-200 shadow-xl">
+          <div className="grid grid-cols-2 gap-2 text-xs font-bold pt-1">
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
-                onOpenCms();
+                onOpenMarketAnalytics();
               }}
-              className="text-[#0F172A] font-bold underline cursor-pointer"
+              className="p-2 bg-slate-100 rounded text-slate-800 flex items-center gap-1.5 justify-center"
             >
-              CMS Portal
+              <BarChart3 className="w-3.5 h-3.5 text-[#B48C4E]" />
+              <span>Market Index</span>
+            </button>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenOffPlan();
+              }}
+              className="p-2 bg-slate-100 rounded text-slate-800 flex items-center gap-1.5 justify-center"
+            >
+              <Building2 className="w-3.5 h-3.5 text-[#B48C4E]" />
+              <span>Off-Plan</span>
+            </button>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenNeighborhoods();
+              }}
+              className="p-2 bg-slate-100 rounded text-slate-800 flex items-center gap-1.5 justify-center"
+            >
+              <Compass className="w-3.5 h-3.5 text-[#B48C4E]" />
+              <span>Area Guides</span>
+            </button>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenRoiCalculator();
+              }}
+              className="p-2 bg-slate-100 rounded text-slate-800 flex items-center gap-1.5 justify-center"
+            >
+              <TrendingUp className="w-3.5 h-3.5 text-[#B48C4E]" />
+              <span>ROI Yield</span>
             </button>
           </div>
 
-          <div className="grid grid-cols-1 gap-1 pt-2">
+          <div className="grid grid-cols-1 gap-1 pt-2 border-t border-slate-100">
             {navItems.map((item) => {
               const isActive = currentView === item.id;
               return (
@@ -200,24 +302,27 @@ export const Header: React.FC<HeaderProps> = ({
             })}
           </div>
 
-          <div className="pt-4 border-t border-slate-100 space-y-2">
+          <div className="pt-3 border-t border-slate-100 space-y-2">
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
-                onOpenValuation();
+                onOpenInstantValuation();
               }}
-              className="w-full bg-[#B48C4E] hover:bg-[#967540] text-white font-bold py-3 px-4 rounded-sm flex items-center justify-center gap-2 text-xs uppercase tracking-wider shadow-md cursor-pointer"
+              className="w-full bg-[#B48C4E] text-white font-bold py-2.5 px-4 rounded-sm flex items-center justify-center gap-2 text-xs uppercase tracking-wider cursor-pointer"
             >
-              <Calculator className="w-4 h-4" />
-              <span>Book a Free Valuation</span>
+              <Sparkles className="w-4 h-4" />
+              <span>Instant AI Home Valuation</span>
             </button>
 
             <button
-              onClick={() => handleNavClick('contact')}
-              className="w-full bg-[#0F172A] hover:bg-slate-800 text-white font-medium py-2.5 px-4 rounded-sm flex items-center justify-center gap-2 text-xs uppercase tracking-wider cursor-pointer"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenVipClub();
+              }}
+              className="w-full bg-slate-900 text-white font-bold py-2.5 px-4 rounded-sm flex items-center justify-center gap-2 text-xs uppercase tracking-wider cursor-pointer"
             >
-              <Phone className="w-4 h-4 text-[#B48C4E]" />
-              <span>Contact Our Office</span>
+              <Crown className="w-4 h-4 text-amber-400" />
+              <span>VIP Off-Market Investor Club</span>
             </button>
           </div>
         </div>
@@ -225,3 +330,4 @@ export const Header: React.FC<HeaderProps> = ({
     </header>
   );
 };
+

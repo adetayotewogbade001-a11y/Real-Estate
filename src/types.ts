@@ -98,12 +98,63 @@ export interface ViewingRequestInput {
   message?: string;
 }
 
+export interface CurrencyOption {
+  code: 'GBP' | 'EUR' | 'USD' | 'AED';
+  symbol: string;
+  rateToGBP: number; // Conversion factor relative to GBP (1.0)
+  label: string;
+}
+
+export type UnitOption = 'sqft' | 'sqm';
+
+export interface OffPlanProject {
+  id: string;
+  name: string;
+  location: string;
+  completionDate: string;
+  progressPercent: number;
+  startingPriceGBP: number;
+  developer: string;
+  image: string;
+  totalUnits: number;
+  availableUnits: number;
+  paymentPlan: string;
+  highlights: string[];
+  description: string;
+}
+
+export interface NeighborhoodInfo {
+  id: string;
+  name: string;
+  tagline: string;
+  heroImage: string;
+  avgPriceGBP: number;
+  avgRentGBP: number;
+  yieldPercent: number;
+  schoolRating: string;
+  commuteBelfastMin: number;
+  commuteDublinMin: number;
+  highlights: string[];
+  description: string;
+}
+
+export interface MarketAnalyticsData {
+  avgPricePerSqFtGBP: number;
+  yoyGrowthPercent: number;
+  avgDaysOnMarket: number;
+  activeListingsCount: number;
+  totalSoldQuarter: number;
+  salesVolumeGBP: string;
+  topPerformingArea: string;
+  topPropertyType: string;
+}
+
 export interface PropertyService {
   id: string;
   title: string;
+  category: 'Sales' | 'Lettings' | 'Commercial' | 'Management' | 'Valuation';
+  iconName: string;
   shortDesc: string;
   fullDesc: string;
-  iconName: string;
-  category: 'Sales' | 'Lettings' | 'Commercial' | 'Valuation' | 'Management';
   highlights: string[];
 }

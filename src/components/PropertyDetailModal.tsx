@@ -18,8 +18,9 @@ import {
   Send,
   Award
 } from 'lucide-react';
-import { Property, ViewingRequestInput } from '../types';
+import { Property, ViewingRequestInput, CurrencyOption, UnitOption } from '../types';
 import { MortgageCalculator } from './MortgageCalculator';
+import { formatPrice, formatArea } from '../utils/formatters';
 
 interface PropertyDetailModalProps {
   property: Property | null;
@@ -27,6 +28,8 @@ interface PropertyDetailModalProps {
   isSaved: boolean;
   onToggleSave: (id: string) => void;
   onOpenValuation: () => void;
+  currency?: CurrencyOption;
+  unit?: UnitOption;
 }
 
 export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
@@ -34,9 +37,14 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
   onClose,
   isSaved,
   onToggleSave,
-  onOpenValuation
+  onOpenValuation,
+  currency = { code: 'GBP', symbol: '£', rateToGBP: 1.0, label: 'GBP' } as CurrencyOption,
+  unit = 'sqft' as UnitOption
 }) => {
   if (!property) return null;
+
+  const displayPrice = currency ? formatPrice(property.price, currency) : property.priceText;
+  const displayArea = formatArea(property.sqft, unit);
 
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
   const [activeTab, setActiveTab] = useState<'details' | 'features' | 'calculator' | 'floorplan'>('details');
@@ -123,7 +131,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
 
             <div className="text-left md:text-right">
               <div className="text-2xl sm:text-3xl font-bold text-[#B48C4E] font-serif">
-                {property.priceText}
+                {displayPrice}{property.category === 'Rent' ? '/mo' : ''}
               </div>
               <span className="text-xs text-slate-500 font-medium">
                 {property.category === 'Rent' ? 'Rental Tenancy' : 'Residential Property Sale'}
@@ -193,7 +201,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
               <div className="bg-[#F9FAFB] border border-slate-200 p-3.5 rounded-sm text-center">
                 <Maximize2 className="w-5 h-5 text-[#B48C4E] mx-auto mb-1" />
                 <span className="text-xs text-slate-500 block">Floor Area</span>
-                <span className="text-sm font-bold text-[#0F172A]">{property.sqft} sq ft</span>
+                <span className="text-sm font-bold text-[#0F172A]">{displayArea}</span>
               </div>
             )}
 
