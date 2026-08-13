@@ -1,0 +1,6 @@
+{
+  "name": "Morgan Property Services",
+  "description": "Long-established estate agency based in Newry City, Northern Ireland. Providing professional residential sales, lettings, commercial property, and valuation services.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
