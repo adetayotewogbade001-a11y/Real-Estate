@@ -17,6 +17,7 @@ interface HeaderProps {
   savedCount: number;
   onOpenValuation: () => void;
   onOpenCms: () => void;
+  onOpenSavedDrawer?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -24,7 +25,8 @@ export const Header: React.FC<HeaderProps> = ({
   setCurrentView,
   savedCount,
   onOpenValuation,
-  onOpenCms
+  onOpenCms,
+  onOpenSavedDrawer
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -120,13 +122,13 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="hidden sm:flex items-center gap-3">
           {/* Favorites shortcut */}
           <button
-            onClick={() => handleNavClick('properties')}
+            onClick={() => onOpenSavedDrawer ? onOpenSavedDrawer() : handleNavClick('properties')}
             className="p-2 rounded-sm bg-slate-50 text-slate-600 hover:text-[#0F172A] hover:bg-slate-100 border border-slate-200 transition-colors relative cursor-pointer"
-            title="Saved Properties"
+            title="Saved Wishlist"
           >
             <Heart className="w-5 h-5" />
             {savedCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-[#B48C4E] text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-[#B48C4E] text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center shadow-sm">
                 {savedCount}
               </span>
             )}

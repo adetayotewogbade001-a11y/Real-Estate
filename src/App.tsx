@@ -7,6 +7,10 @@ import { PropertyDetailModal } from './components/PropertyDetailModal';
 import { ValuationModal } from './components/ValuationModal';
 import { CmsManageModal } from './components/CmsManageModal';
 import { LegalModal } from './components/LegalModal';
+import { PropertyCompareBar } from './components/PropertyCompareBar';
+import { PropertyCompareModal } from './components/PropertyCompareModal';
+import { SavedFavoritesDrawer } from './components/SavedFavoritesDrawer';
+import { ScheduleTourModal } from './components/ScheduleTourModal';
 
 import { HomeView } from './views/HomeView';
 import { PropertiesView } from './views/PropertiesView';
@@ -65,7 +69,7 @@ export default function App() {
     }
   }, [properties]);
 
-  // 3. Saved Properties / Wishlist
+  // 3. Saved Properties / Wishlist State
   const [savedPropertyIds, setSavedPropertyIds] = useState<string[]>(() => {
     try {
       const stored = localStorage.getItem('mps_saved_properties');
@@ -86,19 +90,52 @@ export default function App() {
     );
   };
 
-  // 4. Property Detail Modal State
+  // 4. Houzez Compare Properties State
+  const [compareIds, setCompareIds] = useState<string[]>([]);
+  const [isCompareModalOpen, setIsCompareModalOpen] = useState<boolean>(false);
+
+  const toggleCompareProperty = (property: Property) => {
+    setCompareIds(prev => {
+      if (prev.includes(property.id)) {
+        return prev.filter(id => id !== property.id);
+      }
+      if (prev.length >= 4) {
+        return prev;
+      }
+      return [...prev, property.id];
+    });
+  };
+
+  const removeCompareProperty = (id: string) => {
+    setCompareIds(prev => prev.filter(pId => pId !== id));
+  };
+
+  const clearCompareProperties = () => {
+    setCompareIds([]);
+  };
+
+  const compareProperties = properties.filter(p => compareIds.includes(p.id));
+
+  // 5. Saved Wishlist Drawer State
+  const [isSavedDrawerOpen, setIsSavedDrawerOpen] = useState<boolean>(false);
+  const savedPropertiesList = properties.filter(p => savedPropertyIds.includes(p.id));
+
+  // 6. Schedule Tour Viewing State
+  const [scheduleTourProperty, setScheduleTourProperty] = useState<Property | null>(null);
+
+  // 7. Property Detail Modal State
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
-  // 5. Valuation Modal State
+  // 8. Valuation Modal State
   const [valuationModalOpen, setValuationModalOpen] = useState<boolean>(false);
 
-  // 6. CMS Manage Modal State
+  // 9. CMS Manage Modal State
   const [cmsModalOpen, setCmsModalOpen] = useState<boolean>(false);
 
-  // 7. Legal Modals
+  // 10. Legal Modals
   const [legalModalType, setLegalModalType] = useState<'privacy' | 'terms' | 'cookies' | null>(null);
 
-  // 8. Shared Filter State
+  // 11. Shared Filter State
   const [filter, setFilter] = useState<PropertyFilter>({
     category: 'All',
     propertyType: '',
@@ -142,6 +179,7 @@ export default function App() {
         savedCount={savedPropertyIds.length}
         onOpenValuation={() => setValuationModalOpen(true)}
         onOpenCms={() => setCmsModalOpen(true)}
+        onOpenSavedDrawer={() => setIsSavedDrawerOpen(true)}
       />
 
       {/* Main View Router */}
@@ -170,6 +208,9 @@ export default function App() {
             setFilter={setFilter}
             onOpenCms={() => setCmsModalOpen(true)}
             onOpenValuation={() => setValuationModalOpen(true)}
+            compareIds={compareIds}
+            onToggleCompare={toggleCompareProperty}
+            onScheduleViewing={setScheduleTourProperty}
           />
         )}
 
@@ -217,6 +258,43 @@ export default function App() {
         setCurrentView={setCurrentView}
         onOpenValuation={() => setValuationModalOpen(true)}
         onOpenLegal={setLegalModalType}
+      />
+
+      {/* Houzez Floating Compare Bar */}
+      <PropertyCompareBar
+        compareProperties={compareProperties}
+        onOpenCompareModal={() => setIsCompareModalOpen(true)}
+        onRemoveProperty={removeCompareProperty}
+        onClearAll={clearCompareProperties}
+      />
+
+      {/* Houzez Full Comparison Modal */}
+      <PropertyCompareModal
+        isOpen={isCompareModalOpen}
+        onClose={() => setIsCompareModalOpen(false)}
+        compareProperties={compareProperties}
+        onRemoveFromCompare={removeCompareProperty}
+        onSelectProperty={setSelectedProperty}
+        onClearAll={clearCompareProperties}
+      />
+
+      {/* Houzez Saved Wishlist Drawer */}
+      <SavedFavoritesDrawer
+        isOpen={isSavedDrawerOpen}
+        onClose={() => setIsSavedDrawerOpen(false)}
+        savedProperties={savedPropertiesList}
+        onRemoveFavorite={toggleSaveProperty}
+        onClearAll={() => setSavedPropertyIds([])}
+        onSelectProperty={setSelectedProperty}
+        onToggleCompare={toggleCompareProperty}
+        compareIds={compareIds}
+      />
+
+      {/* Houzez Schedule a Viewing / Tour Modal */}
+      <ScheduleTourModal
+        property={scheduleTourProperty}
+        isOpen={!!scheduleTourProperty}
+        onClose={() => setScheduleTourProperty(null)}
       />
 
       {/* Modals */}
