@@ -21,6 +21,7 @@ import { MarketAnalyticsModal } from './components/MarketAnalyticsModal';
 import { InstantHomeValuationModal } from './components/InstantHomeValuationModal';
 import { VipBuyerClubModal } from './components/VipBuyerClubModal';
 import { WhatsAppConcierge } from './components/WhatsAppConcierge';
+import { SEOHead } from './components/SEOHead';
 
 import { HomeView } from './views/HomeView';
 import { PropertiesView } from './views/PropertiesView';
@@ -112,7 +113,7 @@ export default function App() {
     );
   };
 
-  // 6. Houzez Compare Properties State
+  // 6. Compare Properties State
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState<boolean>(false);
 
@@ -195,6 +196,9 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#F9FAFB] text-slate-900 flex flex-col font-sans selection:bg-[#B48C4E] selection:text-white">
       
+      {/* Dynamic SEO Meta Head */}
+      <SEOHead currentView={currentView} selectedProperty={selectedProperty} />
+
       {/* Navigation Header */}
       <Header
         currentView={currentView}
@@ -306,7 +310,7 @@ export default function App() {
       {/* Floating WhatsApp Concierge Widget */}
       <WhatsAppConcierge />
 
-      {/* Houzez Floating Compare Bar */}
+      {/* Floating Compare Bar */}
       <PropertyCompareBar
         compareProperties={compareProperties}
         onOpenCompareModal={() => setIsCompareModalOpen(true)}
@@ -314,7 +318,7 @@ export default function App() {
         onClearAll={clearCompareProperties}
       />
 
-      {/* Houzez Full Comparison Modal */}
+      {/* Full Comparison Modal */}
       <PropertyCompareModal
         isOpen={isCompareModalOpen}
         onClose={() => setIsCompareModalOpen(false)}
@@ -324,7 +328,7 @@ export default function App() {
         onClearAll={clearCompareProperties}
       />
 
-      {/* Houzez Saved Wishlist Drawer */}
+      {/* Saved Wishlist Drawer */}
       <SavedFavoritesDrawer
         isOpen={isSavedDrawerOpen}
         onClose={() => setIsSavedDrawerOpen(false)}
@@ -336,7 +340,7 @@ export default function App() {
         compareIds={compareIds}
       />
 
-      {/* Houzez Schedule a Viewing / Tour Modal */}
+      {/* Schedule a Viewing / Tour Modal */}
       <ScheduleTourModal
         property={scheduleTourProperty}
         isOpen={!!scheduleTourProperty}

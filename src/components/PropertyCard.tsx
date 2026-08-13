@@ -60,7 +60,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
     }
   };
 
-  // LIST VIEW LAYOUT (Horizontal Houzez Card)
+  // LIST VIEW LAYOUT (Horizontal Card)
   if (viewMode === 'list') {
     return (
       <div className="bg-white rounded-sm overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col sm:flex-row group">

@@ -20,7 +20,8 @@ import {
 } from 'lucide-react';
 import { Property, PropertyFilter, CurrencyOption, UnitOption } from '../types';
 import { PropertyCard } from '../components/PropertyCard';
-import { HouzezPropertyMap } from '../components/HouzezPropertyMap';
+import { PropertyMap } from '../components/PropertyMap';
+import { PropertySearchBar } from '../components/PropertySearchBar';
 
 interface PropertiesViewProps {
   properties: Property[];
@@ -91,8 +92,34 @@ export const PropertiesView: React.FC<PropertiesViewProps> = ({
         return false;
       }
 
+      // Property Age filter
+      if (filter.propertyAge && filter.propertyAge !== 'All' && prop.propertyAge !== filter.propertyAge) {
+        return false;
+      }
+
+      // EPC Rating filter
+      if (filter.epcRating && filter.epcRating !== 'All') {
+        if (!prop.epcRating || !prop.epcRating.toUpperCase().startsWith(filter.epcRating.toUpperCase())) {
+          return false;
+        }
+      }
+
+      // Min Land Size filter
+      if (filter.minLandSize && filter.minLandSize > 0) {
+        if (!prop.landSize || prop.landSize < filter.minLandSize) {
+          return false;
+        }
+      }
+
+      // Virtual Tour filter
+      if (filter.hasVirtualTour) {
+        if (!prop.hasVirtualTour && !prop.virtualTourUrl) {
+          return false;
+        }
+      }
+
       // Search Query
-      if (filter.searchQuery.trim() !== '') {
+      if (filter.searchQuery && filter.searchQuery.trim() !== '') {
         const q = filter.searchQuery.toLowerCase();
         const matchTitle = prop.title.toLowerCase().includes(q);
         const matchStreet = prop.address.street.toLowerCase().includes(q);
@@ -119,7 +146,11 @@ export const PropertiesView: React.FC<PropertiesViewProps> = ({
       maxPrice: 0,
       minBedrooms: 0,
       searchQuery: '',
-      statusFilter: ''
+      statusFilter: '',
+      propertyAge: 'All',
+      epcRating: 'All',
+      minLandSize: 0,
+      hasVirtualTour: false
     });
     setShowSavedOnly(false);
   };
@@ -153,7 +184,7 @@ export const PropertiesView: React.FC<PropertiesViewProps> = ({
           <div className="max-w-2xl space-y-4 flex flex-col items-start text-left">
             <div className="inline-flex items-center gap-2 bg-[#B48C4E]/20 border border-[#B48C4E]/30 px-3.5 py-1.5 rounded-sm text-xs font-semibold text-[#B48C4E]">
               <Building2 className="w-4 h-4" />
-              <span className="text-[10px] uppercase font-bold tracking-widest">Houzez Property Search Engine</span>
+              <span className="text-[10px] uppercase font-bold tracking-widest">Advanced Property Search Engine</span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-bold font-serif text-white tracking-tight leading-tight text-left">
@@ -191,6 +222,13 @@ export const PropertiesView: React.FC<PropertiesViewProps> = ({
 
       {/* Main Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+
+        {/* Integrated Advanced Property Search Bar */}
+        <PropertySearchBar
+          filter={filter}
+          setFilter={setFilter}
+          onSearch={() => {}}
+        />
 
         {/* Top Control Bar: View Mode Selector & Results Summary */}
         <div className="bg-white border border-slate-200 rounded-sm p-3 px-4 flex flex-wrap items-center justify-between gap-3 text-xs shadow-sm">
@@ -271,7 +309,7 @@ export const PropertiesView: React.FC<PropertiesViewProps> = ({
         {/* FULL MAP VIEW MODE */}
         {viewMode === 'map' && (
           <div className="space-y-4">
-            <HouzezPropertyMap
+            <PropertyMap
               properties={filteredProperties}
               onSelectProperty={onSelectProperty}
               hoveredPropertyId={hoveredPropertyId}
@@ -283,7 +321,7 @@ export const PropertiesView: React.FC<PropertiesViewProps> = ({
         {viewMode === 'split' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div className="lg:col-span-5 sticky top-20 h-[550px]">
-              <HouzezPropertyMap
+              <PropertyMap
                 properties={filteredProperties}
                 onSelectProperty={onSelectProperty}
                 hoveredPropertyId={hoveredPropertyId}

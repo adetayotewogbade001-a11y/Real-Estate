@@ -27,7 +27,7 @@ export const PropertyCompareBar: React.FC<PropertyCompareBarProps> = ({
         </div>
         <div>
           <span className="text-[10px] font-bold uppercase tracking-widest text-[#B48C4E] block">
-            Houzez Compare Tray
+            Property Compare Tray
           </span>
           <span className="text-xs sm:text-sm font-bold text-white">
             {compareProperties.length} of 4 Properties

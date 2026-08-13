@@ -44,7 +44,12 @@ export const INITIAL_PROPERTIES: Property[] = [
     rates: '£1,850 per annum',
     floorplanUrl: 'https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1000&q=80',
     agentName: 'Morgan Property Sales Team',
-    addedDate: '2026-08-01'
+    addedDate: '2026-08-01',
+    propertyAge: 'Under 5 Years',
+    landSize: 0.75,
+    landSizeText: '0.75 Acres',
+    hasVirtualTour: true,
+    virtualTourUrl: 'https://my.matterport.com/show/?m=sample1'
   },
   {
     id: 'prop-002',
@@ -82,11 +87,16 @@ export const INITIAL_PROPERTIES: Property[] = [
       'Driveway parking for 2 vehicles',
       'Ideal location for commuters to Belfast or Dublin'
     ],
-    epcRating: 'C76',
+    epcRating: 'A92',
     tenure: 'Freehold',
     rates: '£1,120 per annum',
     agentName: 'Morgan Property Sales Team',
-    addedDate: '2026-08-05'
+    addedDate: '2026-08-05',
+    propertyAge: 'New Build',
+    landSize: 0.15,
+    landSizeText: '0.15 Acres',
+    hasVirtualTour: true,
+    virtualTourUrl: 'https://my.matterport.com/show/?m=sample2'
   },
   {
     id: 'prop-003',
@@ -128,7 +138,10 @@ export const INITIAL_PROPERTIES: Property[] = [
     tenure: 'Leasehold',
     rates: '£950 per annum',
     agentName: 'Morgan Property Sales Team',
-    addedDate: '2026-08-08'
+    addedDate: '2026-08-08',
+    propertyAge: '5-10 Years',
+    landSize: 0,
+    hasVirtualTour: false
   },
   {
     id: 'prop-004',
@@ -166,7 +179,12 @@ export const INITIAL_PROPERTIES: Property[] = [
     ],
     epcRating: 'C74',
     agentName: 'Morgan Property Lettings Team',
-    addedDate: '2026-08-10'
+    addedDate: '2026-08-10',
+    propertyAge: '10-20 Years',
+    landSize: 0.2,
+    landSizeText: '0.2 Acres',
+    hasVirtualTour: true,
+    virtualTourUrl: 'https://my.matterport.com/show/?m=sample3'
   },
   {
     id: 'prop-005',
@@ -202,9 +220,15 @@ export const INITIAL_PROPERTIES: Property[] = [
       'Suitable for retail, financial services, medical or corporate office',
       'Available for sale or flexible long lease'
     ],
+    epcRating: 'C68',
     tenure: 'Freehold',
     agentName: 'Morgan Commercial Property Team',
-    addedDate: '2026-07-28'
+    addedDate: '2026-07-28',
+    propertyAge: 'Period / Character',
+    landSize: 0.1,
+    landSizeText: '0.1 Acres',
+    hasVirtualTour: true,
+    virtualTourUrl: 'https://my.matterport.com/show/?m=sample4'
   },
   {
     id: 'prop-006',
@@ -241,7 +265,11 @@ export const INITIAL_PROPERTIES: Property[] = [
     epcRating: 'D65',
     tenure: 'Freehold',
     agentName: 'Morgan Property Sales Team',
-    addedDate: '2026-07-15'
+    addedDate: '2026-07-15',
+    propertyAge: 'Period / Character',
+    landSize: 0.5,
+    landSizeText: '0.5 Acres',
+    hasVirtualTour: false
   },
   {
     id: 'prop-007',
@@ -276,7 +304,10 @@ export const INITIAL_PROPERTIES: Property[] = [
     ],
     epcRating: 'C72',
     agentName: 'Morgan Property Lettings Team',
-    addedDate: '2026-08-11'
+    addedDate: '2026-08-11',
+    propertyAge: '5-10 Years',
+    landSize: 0,
+    hasVirtualTour: false
   },
   {
     id: 'prop-008',
@@ -309,7 +340,13 @@ export const INITIAL_PROPERTIES: Property[] = [
       'High-speed broadband & office facilities',
       'Direct arterial access to A1 dual carriageway'
     ],
+    epcRating: 'B85',
     agentName: 'Morgan Commercial Team',
-    addedDate: '2026-07-20'
+    addedDate: '2026-07-20',
+    propertyAge: '10-20 Years',
+    landSize: 0.3,
+    landSizeText: '0.3 Acre Yard',
+    hasVirtualTour: true,
+    virtualTourUrl: 'https://my.matterport.com/show/?m=sample5'
   }
 ];

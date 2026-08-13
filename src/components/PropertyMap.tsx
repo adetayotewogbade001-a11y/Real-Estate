@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import { Property } from '../types';
 import { MapPin, ExternalLink, Bed, Bath, Building2 } from 'lucide-react';
 
-interface HouzezPropertyMapProps {
+interface PropertyMapProps {
   properties: Property[];
   onSelectProperty: (property: Property) => void;
   hoveredPropertyId?: string | null;
@@ -21,7 +21,7 @@ const LOCATION_COORDINATES: Record<string, [number, number]> = {
   'Newry': [54.1751, -6.3402]
 };
 
-export const HouzezPropertyMap: React.FC<HouzezPropertyMapProps> = ({
+export const PropertyMap: React.FC<PropertyMapProps> = ({
   properties,
   onSelectProperty,
   hoveredPropertyId
@@ -68,12 +68,12 @@ export const HouzezPropertyMap: React.FC<HouzezPropertyMapProps> = ({
 
       const isHovered = hoveredPropertyId === property.id;
 
-      // Custom Houzez Price Marker HTML
+      // Custom Price Marker HTML
       const priceLabel = property.category === 'Rent' ? `£${property.price}/mo` : `£${(property.price / 1000).toFixed(0)}k`;
       const customIcon = L.divIcon({
-        className: 'custom-houzez-marker',
+        className: 'custom-property-marker',
         html: `
-          <div class="houzez-pin ${isHovered ? 'active' : ''}">
+          <div class="property-pin ${isHovered ? 'active' : ''}">
             <span class="price-tag">${priceLabel}</span>
             <div class="arrow"></div>
           </div>
@@ -124,11 +124,11 @@ export const HouzezPropertyMap: React.FC<HouzezPropertyMapProps> = ({
       </div>
 
       <style>{`
-        .custom-houzez-marker {
+        .custom-property-marker {
           background: transparent;
           border: none;
         }
-        .houzez-pin {
+        .property-pin {
           background-color: #0F172A;
           color: #ffffff;
           padding: 4px 8px;
@@ -143,13 +143,13 @@ export const HouzezPropertyMap: React.FC<HouzezPropertyMapProps> = ({
           transition: all 0.2s ease;
           position: relative;
         }
-        .houzez-pin.active, .houzez-pin:hover {
+        .property-pin.active, .property-pin:hover {
           background-color: #B48C4E;
           color: #ffffff;
           border-color: #0F172A;
           transform: scale(1.1);
         }
-        .houzez-pin .arrow {
+        .property-pin .arrow {
           position: absolute;
           bottom: -6px;
           left: 50%;
@@ -160,7 +160,7 @@ export const HouzezPropertyMap: React.FC<HouzezPropertyMapProps> = ({
           border-right: 5px solid transparent;
           border-top: 6px solid #0F172A;
         }
-        .houzez-pin.active .arrow, .houzez-pin:hover .arrow {
+        .property-pin.active .arrow, .property-pin:hover .arrow {
           border-top-color: #B48C4E;
         }
       `}</style>

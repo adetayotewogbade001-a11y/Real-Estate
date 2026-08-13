@@ -62,7 +62,7 @@ export const PropertyCompareModal: React.FC<PropertyCompareModalProps> = ({
             </div>
             <div>
               <h2 className="text-lg sm:text-xl font-serif font-bold text-white">
-                Houzez Property Comparison Matrix
+                Property Comparison Matrix
               </h2>
               <p className="text-xs text-slate-300">
                 Comparing {compareProperties.length} selected property listing{compareProperties.length !== 1 ? 's' : ''}

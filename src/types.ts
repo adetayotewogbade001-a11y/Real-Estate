@@ -43,6 +43,11 @@ export interface Property {
   floorplanUrl?: string;
   agentName?: string;
   addedDate: string;
+  propertyAge?: 'New Build' | 'Under 5 Years' | '5-10 Years' | '10-20 Years' | 'Period / Character' | string;
+  landSize?: number; // in Acres
+  landSizeText?: string;
+  virtualTourUrl?: string;
+  hasVirtualTour?: boolean;
 }
 
 export interface PropertyFilter {
@@ -54,6 +59,10 @@ export interface PropertyFilter {
   minBedrooms: number;
   searchQuery: string;
   statusFilter: string;
+  propertyAge?: string;
+  epcRating?: string;
+  minLandSize?: number;
+  hasVirtualTour?: boolean;
 }
 
 export interface ValuationRequest {
